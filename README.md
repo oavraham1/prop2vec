@@ -9,6 +9,7 @@ Please cite the latter when using these resources.
 '0-100' is a dataset where the target words are rare (occur less than 100 times in Hebrew wikipedia).
 
 The code in "sample.py" loads a gensim word2vec model and runs evaluation on the 'nn' dataset.
+Notice the sample model it uses ('model.vec') covers only part of the vocabulary, thus the output will contain messages of the type "could not get similarity..." for the OOV words in the datasets.
 The model does not have to be gensim model, but it must have a method "similarity" which takes two words and returns a score.
 Notice that you can filter comparisions by different properties (e.g. compare_type) to perform more fine-grained analysis.
 

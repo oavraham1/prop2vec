@@ -1,4 +1,4 @@
-import math 
+import math
 
 class Comparision:
     def __init__(self, target, w1, w2, w1_prob, w2_prob, set_name, compare_type):
@@ -20,11 +20,11 @@ class Evaluator:
         import glob
         import os.path
         comparisions = []
-        set_files = glob.glob(sets_folder_path + "\\*.txt")
+        set_files = glob.glob(sets_folder_path + "/*.txt")
         for path in set_files:
             with open(path) as f:
                 lines = [line.rstrip() for line in f.readlines()]
-            set_name = os.path.splitext(os.path.basename(path))[0]    
+            set_name = os.path.splitext(os.path.basename(path))[0]
             i = 0
             while (i < len(lines)):
                 target = lines[i]
@@ -62,8 +62,12 @@ class Evaluator:
         if (not relevant_comps):
             return 'N/A'
         for comp in relevant_comps:
-            w1_sim = get_sim(model, comp.target, comp.w1)
-            w2_sim = get_sim(model, comp.target, comp.w2)
+            try:
+                w1_sim = get_sim(model, comp.target, comp.w1)
+                w2_sim = get_sim(model, comp.target, comp.w2)
+            except KeyError:
+                print "could not get similarity score between", comp.w1, "and", comp.w2
+                continue
             if (w1_sim > w2_sim):
                 model_prob = comp.w1_prob      
             else:
@@ -71,5 +75,7 @@ class Evaluator:
             probs_diff = abs(comp.w1_prob - comp.w2_prob)
             if (model_prob == comp.optimal_prob):
                 model_score += probs_diff
-            optimal_score += probs_diff  
+            optimal_score += probs_diff
+        if (optimal_score == 0):
+            return 'N/A'
         return model_score / optimal_score
