@@ -6,3 +6,4 @@
 temp/*
 training/input/*
 training/output/*
+training/fasttext
