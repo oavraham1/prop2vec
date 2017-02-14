@@ -1,5 +1,8 @@
 *.pyc
 *.ipynb_checkpoints
 *.ipynb
-*.tmp
+*.o
+*.tmp*
 temp/*
+training/input/*
+training/output/*
