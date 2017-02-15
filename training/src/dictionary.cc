@@ -135,42 +135,6 @@ void Dictionary::computeNgrams(const std::string& word,
   std::string s = ss.str();
   int32_t h = hash(s) % args_->bucket;
   ngrams.push_back(nwords_ + h);
-  
-  /*std::vector<std::string> props = split(word, '~');
-  if (props.size() == 0)
-    return;
-  std::string word2 = props[0].substr(2);
-  
-  for (size_t i = 0; i < word2.size(); i++) {
-    std::string ngram;
-    if ((word2[i] & 0xC0) == 0x80) continue;
-    for (size_t j = i, n = 1; j < word2.size() && n <= args_->maxn; n++) {
-      ngram.push_back(word2[j++]);
-      while (j < word2.size() && (word2[
-	  j] & 0xC0) == 0x80) {
-        ngram.push_back(word2[j++]);
-      }
-      if (n >= args_->minn && !(n == 1 && (i == 0 || j == word2.size()))) {
-        int32_t h = hash(ngram) % args_->bucket;
-        ngrams.push_back(nwords_ + h);
-      }
-    }
-  }*/
-  
-  /*for (size_t i = 0; i < word.size(); i++) {
-    std::string ngram;
-    if ((word[i] & 0xC0) == 0x80) continue;
-    for (size_t j = i, n = 1; j < word.size() && n <= args_->maxn; n++) {
-      ngram.push_back(word[j++]);
-      while (j < word.size() && (word[j] & 0xC0) == 0x80) {
-        ngram.push_back(word[j++]);
-      }
-      if (n >= args_->minn && !(n == 1 && (i == 0 || j == word.size()))) {
-        int32_t h = hash(ngram) % args_->bucket;
-        ngrams.push_back(nwords_ + h);
-      }
-    }
-  }*/
 }
 
 const std::vector<std::string> Dictionary::split(const std::string &text, char sep) const {
@@ -188,7 +152,6 @@ const std::vector<std::string> Dictionary::split(const std::string &text, char s
 void Dictionary::initNgrams() {
   for (size_t i = 0; i < size_; i++) {
     std::string word = BOW + words_[i].word + EOW;
-    //words_[i].subwords.push_back(i);
     computeNgrams(word, words_[i].subwords);
   }
 }

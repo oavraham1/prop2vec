@@ -27,8 +27,6 @@ Args::Args() {
   loss = loss_name::ns;
   model = model_name::sg;
   bucket = 2000000;
-  minn = 3;
-  maxn = 6;
   thread = 12;
   lrUpdateRate = 100;
   t = 1e-4;
@@ -43,8 +41,6 @@ void Args::parseArgs(int argc, char** argv) {
     model = model_name::sup;
     loss = loss_name::softmax;
     minCount = 1;
-    minn = 0;
-    maxn = 0;
     lr = 0.1;
   } else if (command == "cbow") {
     model = model_name::cbow;
@@ -96,10 +92,6 @@ void Args::parseArgs(int argc, char** argv) {
       }
     } else if (strcmp(argv[ai], "-bucket") == 0) {
       bucket = atoi(argv[ai + 1]);
-    } else if (strcmp(argv[ai], "-minn") == 0) {
-      minn = atoi(argv[ai + 1]);
-    } else if (strcmp(argv[ai], "-maxn") == 0) {
-      maxn = atoi(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-thread") == 0) {
       thread = atoi(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-t") == 0) {
@@ -121,9 +113,6 @@ void Args::parseArgs(int argc, char** argv) {
     std::cout << "Empty input or output path." << std::endl;
     printHelp();
     exit(EXIT_FAILURE);
-  }
-  if (wordNgrams <= 1 && maxn == 0) {
-    bucket = 0;
   }
 }
 
@@ -147,8 +136,6 @@ void Args::printHelp() {
     << "  -wordNgrams         max length of word ngram [" << wordNgrams << "]\n"
     << "  -loss               loss function {ns, hs, softmax} [ns]\n"
     << "  -bucket             number of buckets [" << bucket << "]\n"
-    << "  -minn               min length of char ngram [" << minn << "]\n"
-    << "  -maxn               max length of char ngram [" << maxn << "]\n"
     << "  -thread             number of threads [" << thread << "]\n"
     << "  -t                  sampling threshold [" << t << "]\n"
     << "  -label              labels prefix [" << label << "]\n"
@@ -167,8 +154,6 @@ void Args::save(std::ostream& out) {
   out.write((char*) &(loss), sizeof(loss_name));
   out.write((char*) &(model), sizeof(model_name));
   out.write((char*) &(bucket), sizeof(int));
-  out.write((char*) &(minn), sizeof(int));
-  out.write((char*) &(maxn), sizeof(int));
   out.write((char*) &(lrUpdateRate), sizeof(int));
   out.write((char*) &(t), sizeof(double));
 }
@@ -183,8 +168,6 @@ void Args::load(std::istream& in) {
   in.read((char*) &(loss), sizeof(loss_name));
   in.read((char*) &(model), sizeof(model_name));
   in.read((char*) &(bucket), sizeof(int));
-  in.read((char*) &(minn), sizeof(int));
-  in.read((char*) &(maxn), sizeof(int));
   in.read((char*) &(lrUpdateRate), sizeof(int));
   in.read((char*) &(t), sizeof(double));
 }

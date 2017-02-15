@@ -36,8 +36,6 @@ class Args {
     loss_name loss;
     model_name model;
     int bucket;
-    int minn;
-    int maxn;
     int thread;
     double t;
     std::string label;
