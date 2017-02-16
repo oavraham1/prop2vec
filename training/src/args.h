@@ -13,6 +13,7 @@
 #include <istream>
 #include <ostream>
 #include <string>
+#include <vector>
 
 namespace fasttext {
 
@@ -25,7 +26,7 @@ class Args {
     std::string input;
     std::string test;
     std::string output;
-	std::string props;
+	std::string propsStr;
     double lr;
     int lrUpdateRate;
     int dim;
@@ -42,7 +43,7 @@ class Args {
     std::string label;
     int verbose;
     std::string pretrainedVectors;
-
+	
     void parseArgs(int, char**);
     void printHelp();
     void save(std::ostream&);

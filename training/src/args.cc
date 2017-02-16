@@ -63,7 +63,7 @@ void Args::parseArgs(int argc, char** argv) {
     } else if (strcmp(argv[ai], "-output") == 0) {
       output = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-props") == 0) {
-      props = std::string(argv[ai + 1]);
+      propsStr = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lr") == 0) {
       lr = atof(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lrUpdateRate") == 0) {
@@ -160,9 +160,9 @@ void Args::save(std::ostream& out) {
   out.write((char*) &(lrUpdateRate), sizeof(int));
   out.write((char*) &(t), sizeof(double));
   
-  int len = props.size();
+  int len = propsStr.size();
   out.write((char*) &len, sizeof(int));
-  out.write(props.c_str(), len);
+  out.write(propsStr.c_str(), len);
 }
 
 void Args::load(std::istream& in) {
@@ -183,7 +183,7 @@ void Args::load(std::istream& in) {
   char* temp = new char[len+1];
   in.read(temp, len);
   temp[len] = '\0';
-  props = temp;
+  propsStr = temp;
   delete [] temp;
 }
 
