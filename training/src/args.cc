@@ -63,7 +63,7 @@ void Args::parseArgs(int argc, char** argv) {
     } else if (strcmp(argv[ai], "-output") == 0) {
       output = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-props") == 0) {
-      input = std::string(argv[ai + 1]);
+      props = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lr") == 0) {
       lr = atof(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lrUpdateRate") == 0) {
