@@ -17,6 +17,8 @@
 #include <unordered_map>
 #include <cctype>
 
+#include "utils.h"
+
 namespace fasttext {
 
 const std::string Dictionary::EOS = "</s>";
@@ -121,7 +123,7 @@ uint32_t Dictionary::hash(const std::string& str) const {
 
 void Dictionary::computeNgrams(const std::string& word,
                                std::vector<int32_t>& ngrams) const {
-  std::vector<std::string> props = split(word, '~');
+  std::vector<std::string> props = utils::split(word, '~');
   for (size_t i = 0; i <= 1 && i < props.size(); i++) {
    	int32_t h = hash(props[i]) % args_->bucket;
 	ngrams.push_back(nwords_ + h);
@@ -136,18 +138,6 @@ void Dictionary::computeNgrams(const std::string& word,
   int32_t h = hash(s) % args_->bucket;
   ngrams.push_back(nwords_ + h);
 }
-
-const std::vector<std::string> Dictionary::split(const std::string &text, char sep) const {
-  std::vector<std::string> tokens;
-  std::size_t start = 0, end = 0;
-  while ((end = text.find(sep, start)) != std::string::npos) {
-    tokens.push_back(text.substr(start, end - start));
-    start = end + 1;
-  }
-  tokens.push_back(text.substr(start));
-  return tokens;
-}
-
 
 void Dictionary::initNgrams() {
   for (size_t i = 0; i < size_; i++) {

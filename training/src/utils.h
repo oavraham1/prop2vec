@@ -11,6 +11,7 @@
 #define FASTTEXT_UTILS_H
 
 #include <fstream>
+#include <vector>
 
 #include "real.h"
 
@@ -32,6 +33,7 @@ namespace utils {
 
   int64_t size(std::ifstream&);
   void seek(std::ifstream&, int64_t);
+  const std::vector<std::string> split(const std::string &text, char sep);
 }
 
 }

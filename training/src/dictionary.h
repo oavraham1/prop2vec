@@ -66,7 +66,6 @@ class Dictionary {
     const std::vector<int32_t>& getNgrams(int32_t) const;
     const std::vector<int32_t> getNgrams(const std::string&) const;
     void computeNgrams(const std::string&, std::vector<int32_t>&) const;
-	const std::vector<std::string> split(const std::string &text, char sep) const;
     uint32_t hash(const std::string& str) const;
     void add(const std::string&);
     bool readWord(std::istream&, std::string&) const;
