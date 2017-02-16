@@ -124,19 +124,10 @@ uint32_t Dictionary::hash(const std::string& str) const {
 void Dictionary::computeNgrams(const std::string& word,
                                std::vector<int32_t>& ngrams) const {
   std::vector<std::string> props = utils::split(word, '~');
-  for (size_t i = 0; i <= 1 && i < props.size(); i++) {
+  for (size_t i = 0; i < props.size(); i++) {
    	int32_t h = hash(props[i]) % args_->bucket;
 	ngrams.push_back(nwords_ + h);
   }
-  std::stringstream ss;
-  for(size_t i = 2; i < props.size(); ++i) {
-	if (i != 2)
-	  ss << "~";
-	ss << props[i];
-  }
-  std::string s = ss.str();
-  int32_t h = hash(s) % args_->bucket;
-  ngrams.push_back(nwords_ + h);
 }
 
 void Dictionary::initNgrams() {
