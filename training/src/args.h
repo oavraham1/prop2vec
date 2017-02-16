@@ -14,6 +14,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 namespace fasttext {
 
@@ -43,8 +44,9 @@ class Args {
     std::string label;
     int verbose;
     std::string pretrainedVectors;
-    std::vector<std::string> props;
+    std::unordered_set<std::string> props;
 	
+	void initProps(std::string);
     void parseArgs(int, char**);
     void printHelp();
     void save(std::ostream&);

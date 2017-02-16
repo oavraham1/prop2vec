@@ -38,6 +38,14 @@ Args::Args() {
   verbose = 2;
   pretrainedVectors = "";
 }
+	
+void Args::initProps(std::string propsStr) {
+  props.clear();
+  std::vector<std::string> propsVec = utils::split(propsStr, PROPS_SEP);
+  for (size_t i = 0; i < propsVec.size(); i++) {
+    props.insert(propsVec[i]);
+  }
+}
 
 void Args::parseArgs(int argc, char** argv) {
   std::string command(argv[1]);
@@ -68,7 +76,7 @@ void Args::parseArgs(int argc, char** argv) {
       output = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-props") == 0) {
       propsStr = std::string(argv[ai + 1]);
-      props = utils::split(propsStr, PROPS_SEP);
+      initProps(propsStr);
     } else if (strcmp(argv[ai], "-lr") == 0) {
       lr = atof(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lrUpdateRate") == 0) {
@@ -190,7 +198,7 @@ void Args::load(std::istream& in) {
   temp[len] = '\0';
   propsStr = temp;
   delete [] temp;
-  props = utils::split(propsStr, PROPS_SEP);
+  initProps(propsStr);
 }
 
 }
