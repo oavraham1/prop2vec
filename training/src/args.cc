@@ -57,11 +57,13 @@ void Args::parseArgs(int argc, char** argv) {
       printHelp();
       exit(EXIT_FAILURE);
     } else if (strcmp(argv[ai], "-input") == 0) {
-      input = std::string(argv[ai + 1]);
-    } else if (strcmp(argv[ai], "-test") == 0) {
+      input = std::string(argv[ai + 1]); 
+	} else if (strcmp(argv[ai], "-test") == 0) {
       test = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-output") == 0) {
       output = std::string(argv[ai + 1]);
+    } else if (strcmp(argv[ai], "-props") == 0) {
+      input = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lr") == 0) {
       lr = atof(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-lrUpdateRate") == 0) {
@@ -124,7 +126,8 @@ void Args::printHelp() {
     << "\n"
     << "The following arguments are mandatory:\n"
     << "  -input              training file path\n"
-    << "  -output             output file path\n\n"
+    << "  -output             output file path\n"
+    << "  -props              properties to use (with '+' as separator, e.g. 'w+l+m')\n\n"
     << "The following arguments are optional:\n"
     << "  -lr                 learning rate [" << lr << "]\n"
     << "  -lrUpdateRate       change the rate of updates for the learning rate [" << lrUpdateRate << "]\n"
@@ -156,6 +159,10 @@ void Args::save(std::ostream& out) {
   out.write((char*) &(bucket), sizeof(int));
   out.write((char*) &(lrUpdateRate), sizeof(int));
   out.write((char*) &(t), sizeof(double));
+  
+  int len = props.size();
+  out.write((char*) &len, sizeof(int));
+  out.write(props.c_str(), len);
 }
 
 void Args::load(std::istream& in) {
@@ -170,6 +177,14 @@ void Args::load(std::istream& in) {
   in.read((char*) &(bucket), sizeof(int));
   in.read((char*) &(lrUpdateRate), sizeof(int));
   in.read((char*) &(t), sizeof(double));
+  
+  int len;
+  in.read((char*) &len, sizeof(int));
+  char* temp = new char[len+1];
+  in.read(temp, len);
+  temp[len] = '\0';
+  props = temp;
+  delete [] temp;
 }
 
 }

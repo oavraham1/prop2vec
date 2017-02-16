@@ -25,6 +25,7 @@ class Args {
     std::string input;
     std::string test;
     std::string output;
+	std::string props;
     double lr;
     int lrUpdateRate;
     int dim;
