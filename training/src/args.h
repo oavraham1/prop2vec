@@ -43,6 +43,7 @@ class Args {
     std::string label;
     int verbose;
     std::string pretrainedVectors;
+    std::vector<std::string> props;
 	
     void parseArgs(int, char**);
     void printHelp();
