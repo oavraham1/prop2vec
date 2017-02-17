@@ -7,3 +7,4 @@ temp/*
 training/input/*
 training/output/*
 training/fasttext
+utils/inf_dict.txt
