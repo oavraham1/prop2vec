@@ -22,8 +22,6 @@
 namespace fasttext {
 
 const std::string Dictionary::EOS = "</s>";
-const std::string Dictionary::BOW = "<";
-const std::string Dictionary::EOW = ">";
 static const char PROP_VALUE_SEP = ':';
 
 Dictionary::Dictionary(std::shared_ptr<Args> args) {
@@ -85,7 +83,7 @@ const std::vector<int32_t> Dictionary::getNgrams(const std::string& word) const 
     return getNgrams(i);
   }
   std::vector<int32_t> ngrams;
-  computeNgrams(BOW + word + EOW, ngrams);
+  computeNgrams(word, ngrams);
   return ngrams;
 }
 
@@ -125,7 +123,7 @@ uint32_t Dictionary::hash(const std::string& str) const {
 void Dictionary::computeNgrams(const std::string& word,
                                std::vector<int32_t>& ngrams) const {
   //char x;
-  std::vector<std::string> propsValues = utils::split(word.substr(1), '~');
+  std::vector<std::string> propsValues = utils::split(word, '~');
   for (size_t i = 0; i < propsValues.size(); i++) {
     std::string value = propsValues[i];
 	std::string prop = value.substr(0, value.find(PROP_VALUE_SEP));
@@ -142,8 +140,7 @@ void Dictionary::computeNgrams(const std::string& word,
 
 void Dictionary::initNgrams() {
   for (size_t i = 0; i < size_; i++) {
-    std::string word = BOW + words_[i].word + EOW;
-    computeNgrams(word, words_[i].subwords);
+    computeNgrams(words_[i].word, words_[i].subwords);
   }
 }
 
