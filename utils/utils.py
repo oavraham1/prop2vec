@@ -20,19 +20,19 @@ def get_word2bases():
 		options = { }
 		for option in zip(lineParts[1::2], lineParts[2::2]):
 			infParts = [p for p in option[0].split(':') if p]
-			if (len(infParts) > 1 and infParts[1].startswith('S_PP')):
+			if (len(infParts) > 1 and infParts[1].startswith('S_PP')):	# unify possesives
 				inf = infParts[0] + '-B'
 			else:
 				inf = '-'.join(infParts)
 			if (inf.startswith('VB') or inf.startswith('BN')):
 				parts = inf.split('-')
 				props = parts[0:len(parts)-1]
-				if (any(props) and props[0].startswith('BN')):
+				if (any(props) and props[0].startswith('BN')):	# unify present tense
 					props[0] = 'VB'
 					props.append('BEINONI')
 				inf = '-'.join(props)
 			base = option[1]
-			if (not inf in options or len(options[inf]) > len(base)):
+			if (not inf in options or len(options[inf]) > len(base)):	# in case of multi options for base, take the shortest
 				options[inf] = base
 		if (any(options)):
 			morphDict[target] = options
