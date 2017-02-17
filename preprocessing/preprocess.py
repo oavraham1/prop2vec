@@ -25,14 +25,14 @@ class Token:
             morph = parts[5]
         if (morph == '_'):
             return pos
-        if (pos == 'BN'):
+        if (pos == 'BN'):  # unify present tense
             pos = 'VB'
             morph += "|tense=BEINONI"
         morph_parts = morph.split('|')
         if (len(morph_parts) == 5):
-            morph_parts = ['gen=MF'] + morph_parts[2:]
+            morph_parts = ['gen=MF'] + morph_parts[2:]  # fix 'MF' gender format
         morph = '-'.join([pos] + [p.split('=')[1] for p in morph_parts])
-        if ('POS' in detailed_pos):
+        if ('POS' in detailed_pos):  # unify possessives
             morph += '-B'
         
         return morph
@@ -53,32 +53,13 @@ class Sentence:
 special_char = '~'
 
 class ModelCreator:
-    def __init__(self, word2bases, is_rare):
+    def __init__(self, word2bases, should_filter, token_format):
         self.word2bases = word2bases
-        self.is_rare = is_rare
-    
-    def get_morph_parts(self, morph):
-        morph_parts = morph.split('-');
-        morph_parts[0] = morph_parts[0][:2]
-        return morph_parts
+        self.should_filter = should_filter
+        self.token_format = token_format
             
-    def create_model(self, corpus_file_path, output_path):
-        with open(corpus_file_path, 'rb') as rf:
-            with open(output_path, 'wb') as wf:
-                line = rf.readline()
-                while (line != ''):
-                    conll_lines = []
-                    while (line.strip() != ''):
-                        conll_lines.append(line)
-                        line = rf.readline()
-                    if (not conll_lines):
-                        line = rf.readline()
-                        continue
-                    sentence = Sentence(conll_lines, self.word2bases)        
-                    tokens = [t for t in sentence.tokens if not self.is_rare(t.word) and not t.word in ['*PRP*', '*POS*', '*DEF*', '*ACC*']]                    
-                    wf.write(' '.join([special_char.join(['w:'+t.word, 'l:'+t.base, 'm:'+t.morph]) for t in tokens]) + '\n')
-                    line = rf.readline()
-					
+
+
 def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
@@ -98,13 +79,35 @@ def main(argv):
 	parentdir = os.path.dirname(currentdir)
 	sys.path.insert(0, parentdir + '/utils')
 	import utils
-
 	word2bases = utils.get_word2bases()
 	word2count = utils.get_word2count(inputfile)
+	
+	def get_count(word):
+		if (not word in word2count):
+			return 0
+		return word2count[word]
+	
+	def is_marker(word):
+		return word in ['*PRP*', '*POS*', '*DEF*', '*ACC*']
 
-	is_rare = lambda word: word not in word2count or word2count[word] < 5
-	creator = ModelCreator(word2bases, is_rare)
-	creator.create_model(inputfile, outputfile)
+	should_filter = lambda word: get_count(word) < 5 or is_marker(word)	
+	token_format = lambda t: special_char.join(['w:' + t.word, 'l:' + t.base, 'm:' + t.morph])
+	
+	with open(inputfile, 'rb') as rf:
+		with open(outputfile, 'wb') as wf:
+			line = rf.readline()
+			while (line != ''):
+				conll_lines = []
+				while (line.strip() != ''):
+					conll_lines.append(line)
+					line = rf.readline()
+				if (not conll_lines):
+					line = rf.readline()
+					continue
+				sentence = Sentence(conll_lines, word2bases)        
+				tokens = [t for t in sentence.tokens if not should_filter(t.word)]                    
+				wf.write(' '.join([token_format(t) for t in tokens]) + '\n')
+				line = rf.readline()
 
 	
 if __name__ == "__main__":
