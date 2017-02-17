@@ -1,14 +1,18 @@
+def get_file_dir():
+	import os,inspect
+	return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
 def extract_zipped_txt(file_name):
 	import os.path
 	if (os.path.exists(file_name + '.txt')):
 		return
 	import zipfile
 	zip_file = zipfile.ZipFile(file_name + '.zip')
-	zip_file.extractall()
+	zip_file.extractall(get_file_dir())
 
 def get_word2bases():
-	import zipfile
-	dict_file_name = "inf_dict"
+	import zipfile,os,inspect
+	dict_file_name = get_file_dir() + "/inf_dict"
 	extract_zipped_txt(dict_file_name)
 	dict_file_path = dict_file_name + ".txt"
 	
