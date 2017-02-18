@@ -51,7 +51,7 @@ class Evaluator:
     def get_similarity_after_decode(self, model, w1, w2):
         return self.get_similarity(model, w1.decode('utf-8'), w2.decode('utf-8'))
 		
-    def get_score(self, model, comp_filter, decode_utf = True):
+    def get_score(self, model, comp_filter, decode_utf = True, print_oov = True):
         if (decode_utf):
             get_sim = self.get_similarity_after_decode
         else:
@@ -66,7 +66,8 @@ class Evaluator:
                 w1_sim = get_sim(model, comp.target, comp.w1)
                 w2_sim = get_sim(model, comp.target, comp.w2)
             except KeyError:
-                print "could not get similarity score between", comp.w1, "and", comp.w2
+                if (print_oov):
+                    print "could not get similarity score between", comp.w1, "and", comp.w2
                 continue
             if (w1_sim > w2_sim):
                 model_prob = comp.w1_prob      

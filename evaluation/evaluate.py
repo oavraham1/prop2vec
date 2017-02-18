@@ -14,5 +14,8 @@ import utils
 
 wrapped_model = wrappers.Word2vec(model, utils.get_word2bases())
 
-e = evaluator.Evaluator(ag_dir + "/datasets/basic")
-print e.get_score(wrapped_model, lambda comp: comp.set_name == 'nn', decode_utf=False)
+def evaluate(subfolder):
+	e = evaluator.Evaluator(ag_dir + "/datasets/" + subfolder)
+	return e.get_score(wrapped_model, lambda comp: comp.set_name == 'nn', decode_utf=False, print_oov=False)
+
+print "Semantic Sim: " + "%.4f" % evaluate("basic")

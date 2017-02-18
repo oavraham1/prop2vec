@@ -66,14 +66,12 @@ class Word2vec(object):
             best_sims = distinct_sims
         return [(sim[0], sim[1], utils.morpho_dist(self.get_morph_parts_combinations(senses, sim[0]))) for sim in best_sims[:n]]
     
-    def similarity(self, w1, w2, print_pair=False, print_errors=True):
+    def similarity(self, w1, w2, print_pair=False):
         w1_senses = self.filter_oovs(self.get_senses(w1))
         w2_senses = self.filter_oovs(self.get_senses(w2))
         combinations = self.get_combinations(w1_senses, w2_senses)
         if (not combinations):
-            if (print_errors):
-                print w1, w2, "N/A"
-            return random.random() / 10.0
+            raise KeyError("No combinations")
         
         max_sim = -1
         for w1_sense, w2_sense in combinations:

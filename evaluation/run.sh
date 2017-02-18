@@ -9,5 +9,4 @@ then
   mv ag-evaluation-master "${AGDIR}"
 fi
 
-cd "${AGDIR}"
-python evaluate.py model.vec
+python evaluate.py $1 > $2
