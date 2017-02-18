@@ -1,1 +1,5 @@
-Semantic Sim: 0.5379
+basic: 0.527783431712
+rare: N/A
+ambiguous: 0.567058823529
+Avg MorphoSim for words.txt: 0.741440834436
+Avg MorphoSim for rare_words.txt: 0

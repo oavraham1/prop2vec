@@ -46,7 +46,7 @@ class Word2vec(object):
         num_of_sims = n
         if (distinct_base):
             num_of_sims *= 10
-        senses = s/home/oded/ag-evaluation/model.vecelf.filter_oovs(self.get_senses(word))
+        senses = self.filter_oovs(self.get_senses(word))
         senses_sims = [self.model.most_similar(sense, topn=num_of_sims) for sense in senses]
         sims = [item for sublist in senses_sims for item in sublist if item[0]!='</s>']
         best_sims = sorted(sims, key=lambda sim:sim[1], reverse=True)
