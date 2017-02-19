@@ -1,12 +1,14 @@
 #!/bin/bash
 
-AGDIR=ag-evaluation
+script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ag_dir=$script_dir/ag-evaluation
+eval_file=$script_dir/evaluate.py
 
-if [ ! -d "${AGDIR}" ]
+if [ ! -d "${ag_dir}" ]
 then
   wget -c https://github.com/oavraham1/ag-evaluation/archive/master.zip
   unzip "master.zip" && rm "master.zip"
-  mv ag-evaluation-master "${AGDIR}"
+  mv ag-evaluation-master "${ag_dir}"
 fi
 
-python evaluate.py $1 > $2
+python $eval_file $1 > $2
