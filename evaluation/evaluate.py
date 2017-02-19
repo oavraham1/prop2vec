@@ -14,7 +14,7 @@ sys.path.insert(0, parentdir + '/utils')
 import utils
 
 word2bases = utils.get_word2bases()
-wrapped_model = wrappers.Word2vec(model, word2bases)
+wrapped_model = wrappers.Word2vecDisamb(model, word2bases)
 
 def semantic_sim(subfolder):
 	e = evaluator.Evaluator(ag_dir + "/datasets/" + subfolder)

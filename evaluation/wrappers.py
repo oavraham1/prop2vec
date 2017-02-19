@@ -119,7 +119,7 @@ class Word2vecDisamb(Word2vec):
         return self.word2taggedwords[word]
 
     def get_raw_word(self, word):
-        return word[1:word.index('~')]
+        return word[2:word.index('~')]
 
     def get_morph_parts_combinations(self, word_senses, sim):
         senses_morph_parts = [utils.get_morph_parts_from_wlm_str(sense) for sense in word_senses]
