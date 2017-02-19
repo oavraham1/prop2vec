@@ -31,7 +31,7 @@ class Word2vec(object):
     def get_senses_sims(self, word, n):
         senses = self.filter_oovs(self.get_senses(word))
         senses_sims = [self.model.most_similar(sense, topn=n) for sense in senses]
-        sims = [item for sublist in senses_sims for item in sublist if item[0]!='</s>']
+        sims = [item for sublist in senses_sims for item in sublist]
         return sorted(sims, key=lambda sim:sim[1], reverse=True)[:n]
 		
     def get_morph_parts_combinations(self, word_senses, sim):
@@ -48,7 +48,7 @@ class Word2vec(object):
             num_of_sims *= 10
         senses = self.filter_oovs(self.get_senses(word))
         senses_sims = [self.model.most_similar(sense, topn=num_of_sims) for sense in senses]
-        sims = [item for sublist in senses_sims for item in sublist if item[0]!='</s>']
+        sims = [item for sublist in senses_sims for item in sublist]
         best_sims = sorted(sims, key=lambda sim:sim[1], reverse=True)
         if (distinct_base):
             all_sims_bases = set()
@@ -107,7 +107,7 @@ class Word2vecDisamb(Word2vec):
     def __init__(self, model, word2bases):
         super(Word2vecDisamb, self).__init__(model, word2bases)
         self.word2taggedwords = { }
-        for tagged_word in [w for w in self.model.vocab.iterkeys() if w != '</s>']:
+        for tagged_word in self.model.vocab.iterkeys():
             word = self.get_raw_word(tagged_word).encode('utf-8')         
             if (not word in self.word2taggedwords):
                 self.word2taggedwords[word] = []
