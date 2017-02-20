@@ -30,12 +30,14 @@ def morpho_sim(words_file, k):
 	words = [line.strip() for line in lines]
 	words = [w for w in words if w in word2bases]
 	morph_dist_sum = 0
+	morph_dist_num = 0
 	for w in words:
 		sims = wrapped_model.most_similar(w, True, k)
 		sims_dists = [sim[2] for sim in sims if sim[2] != 'N/A']
 		if (len(sims_dists) != 0):
+			morph_dist_num += 1
 			morph_dist_sum += sum(sims_dists) / float(len(sims_dists))
-    print 'Avg MorphoSim for ' + words_file + ':', morph_dist_sum / len(words)
+    print 'Avg MorphoSim for ' + words_file + ':', morph_dist_sum / morph_dist_num
 														  
 morpho_sim("words.txt", 10)
 morpho_sim("rare_words.txt", 10)
