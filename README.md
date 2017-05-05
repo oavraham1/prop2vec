@@ -1,13 +1,13 @@
 # prop2vec
 
-prop2vec is a library for learning of word representations based on custom properties. 
+prop2vec is a library for learning of word representations based on custom properties.  
 This library was used in the paper [The Interplay of Semantics and Morphology in Word Embeddings](https://www.aclweb.org/anthology/E/E17/E17-2067.pdf).
 
- prop2vec is based on the [fastText](https://github.com/facebookresearch/fastText) library, which learns n-gram vector and represents each word as a combination of its n-grams.
+prop2vec is based on the [fastText](https://github.com/facebookresearch/fastText) library, which learns n-gram vector and represents each word as a combination of its n-grams.  
 Instead of n-grams, prop2vec allows using custom properties of words.
 
-For example, one could represent a word as a combination of lemma, morphological tag and surface form:
-walking = V*walk* + V*present-participle* + V*walking*
+For example, one could represent a word as a combination of lemma, morphological tag and surface form:  
+walking = V*walk* + V*present.participle* + V*walking*
 
 ### Requirements
 - gcc-4.6.3 or newer (for compiling)
@@ -33,23 +33,23 @@ In the example above, prop2vec learns the representations using the following pr
 * lemma (m)
 * morphological tag (m)
 
-Let's say we want to learn representations that are based only on surface form and lemma.
+Let's say we want to learn representations that are based only on surface form and lemma.  
 What we should do is open the file *train_evaluate.sh* and change the line `props="w+l+m"` to `props="w+l"`.
 
 ##### Defining new properties
-Let's say we want to define a new property, e.g. the index of the word in the sentence.
-What we should do is open the file *preprocessing/preprocess.py* and change the `token_format`.
-`token_format` lambda defines how to format every token in preprocessing, so instead:
-`token_format = lambda t: special_char.join(['w:' + t.word, 'l:' + t.base, 'm:' + t.morph])`
-we write:
-`token_format = lambda t: special_char.join(['w:' + t.word, 'l:' + t.base, 'm:' + t.morph, 'i:' + t.index])`
+Let's say we want to define a new property, e.g. the index of the word in the sentence.  
+What we should do is open the file *preprocessing/preprocess.py* and change the `token_format`.  
+`token_format` lambda defines how to format every token in preprocessing, so instead:  
+`token_format = lambda t: special_char.join(['w:' + t.word, 'l:' + t.base, 'm:' + t.morph])`  
+we write:  
+`token_format = lambda t: special_char.join(['w:' + t.word, 'l:' + t.base, 'm:' + t.morph, 'i:' + t.index])`  
 Notice that the index value is already extracted and stored to `t.index` as a part of the sentence processing, otherwise we would have to handle the extraction of the property value rather than just use it.
 
 ##### Using on other languages
-While the training code is language-agnostic, the preprocessing and evaluation rely on Hebrew resources. 
-* To adapt preprocessing to other language, the file *utils/inf_dict.txt* should be replaced with an inflections dictionary for the new language.
-In case the format of the new dictionary is different, a change in the function `get_word2bases` in *utils/utils.py* will be required.
-* To adapt evaluation to other language, the datasets in the *evaluation* folder should be replaced by datasets for the new language.
+While the training code is language-agnostic, the preprocessing and evaluation rely on Hebrew resources.  
+* To adapt preprocessing to other language, the file *utils/inf_dict.txt* should be replaced with an inflections dictionary for the new language.  
+In case the format of the new dictionary is different, a change in the function `get_word2bases` in *utils/utils.py* will be required.  
+* To adapt evaluation to other language, the datasets in the *evaluation* folder should be replaced by datasets for the new language.  
 In case the format of the new datasets is different, a change in the file *evaluation/ag-evaluation/evaluator.py* will be required.
 
 
