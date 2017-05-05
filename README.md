@@ -24,7 +24,7 @@ This should start a process of several steps:
 1. Download a morphologically analyzed sample of Hebrew Wikipedia
 2. Preprocess the sample to produce the input for prop2vec
 3. Compile and run prop2vec to produce the word embeddings
-4. Evaluate the embeddings on the benchmarks mentioned in the paper
+4. Evaluate the embeddings on the benchmarks mentioned in the paper, and output results to a file
 
 ### How to perform modifications?
 ##### Changing the set of properties
@@ -68,5 +68,5 @@ If you make use of this software for research purposes, we'll appreciate citing 
       url       = {http://www.aclweb.org/anthology/E17-2067}
     }
 
-#### Contact
+### Contact
 For any question, please contact oavraham1@gmail.com
