@@ -127,7 +127,7 @@ void Dictionary::computeNgrams(const std::string& word,
   for (size_t i = 0; i < propsValues.size(); i++) {
     std::string value = propsValues[i];
 	std::string prop = value.substr(0, value.find(PROP_VALUE_SEP));
-    const bool useProp = args_->props.find(prop) != args_->props.end();
+  const bool useProp = args_->props.find(prop) != args_->props.end();
 	if (useProp) {
 	  int32_t h = hash(value) % args_->bucket;
 	  ngrams.push_back(nwords_ + h);

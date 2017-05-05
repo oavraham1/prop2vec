@@ -1,6 +1,6 @@
 #!/bin/bash
 
-props="w"
+props="w+l+m"
 corpus_processed=$(cd "$(dirname "$1")"; pwd)/$(basename "$1")
 model_path=${corpus_processed}_$props
 model_full_path=$model_path.vec
